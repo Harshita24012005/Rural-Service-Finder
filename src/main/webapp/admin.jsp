@@ -1,0 +1,5 @@
+<form action="AdminLoginServlet" method="post">
+Username:<input type="text" name="username"><br>
+Password:<input type="password" name="password"><br>
+<button>Login</button>
+</form>

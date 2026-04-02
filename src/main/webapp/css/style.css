@@ -1,0 +1,174 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Body */
+body {
+  background: linear-gradient(to bottom, #e8f5e9, #ffffff);
+  color: #2e3d2f;
+}
+
+/* Container */
+.container {
+  width: 90%;
+  margin: auto;
+  padding: 20px 0;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1b5e20;
+  letter-spacing: 1px;
+}
+
+/* Search Box */
+.search-box {
+  display: flex;
+  margin: 20px 0;
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 100, 0, 0.2);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  outline: none;
+}
+
+.search-box button {
+  padding: 14px 20px;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search-box button:hover {
+  background: #1b5e20;
+}
+
+/* Section Title */
+h2 {
+  margin-bottom: 12px;
+  color: #2e7d32;
+}
+
+/* Services */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.service-card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.service-card img {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+.service-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  background: #e8f5e9;
+}
+
+/* Providers */
+.providers {
+  margin-top: 25px;
+}
+
+.provider-card {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 15px;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.provider-card:hover {
+  transform: translateY(-5px);
+}
+
+.provider-card img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.provider-info h3 {
+  color: #1b5e20;
+}
+
+.provider-info p {
+  font-size: 13px;
+  color: gray;
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px;
+  border-top: 1px solid #ddd;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: gray;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.navbar a:hover {
+  color: #2e7d32;
+}
+
+.navbar .active {
+  color: #2e7d32;
+  font-weight: bold;
+}
+/* Fade Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.service-card, .provider-card {
+  animation: fadeIn 0.6s ease-in-out;
+}
