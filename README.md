@@ -25,4 +25,5 @@ To provide a centralized platform for accessing local services easily.
 - AI-based service recommendation
 
 ## 👩‍💻 Developed By
-Your Name
+Harshita Sohner
+Isha Khan
