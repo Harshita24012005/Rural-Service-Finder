@@ -1,50 +1,55 @@
 package controller;
 
-import java.io.IOException;
-import java.sql.*;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
 import util.DBConnection;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
+import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String mobile = req.getParameter("mobile");
-        String password = req.getParameter("password");
+        String mobile = request.getParameter("mobile");
+        String password = request.getParameter("password");
 
         try {
             Connection con = DBConnection.getConnection();
 
-            PreparedStatement ps = con.prepareStatement(
-                "SELECT * FROM users WHERE mobile=? AND password=?"
-            );
+            String sql = "SELECT * FROM providers WHERE mobile=? AND password=?";
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, mobile);
             ps.setString(2, password);
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                // ✅ Login Success → session create
-                HttpSession session = req.getSession();
-                session.setAttribute("userMobile", mobile);
 
-                // Forward to dashboard (absolute safe path)
-                req.getRequestDispatcher("/dashboard.jsp").forward(req, res);
-                return;
+                String role = rs.getString("role");
+                String name = rs.getString("full_name");
+
+                HttpSession session = request.getSession();
+
+                session.setAttribute("user", name);
+                session.setAttribute("role", role);
+                session.setAttribute("mobile", mobile);   // ✅ FIX
+
+                // 🔥 REDIRECT
+                if ("provider".equals(role)) {
+                    response.sendRedirect("provider_dashboard.jsp");
+                } else {
+                    response.sendRedirect("service_list.jsp");
+                }
+
             } else {
-                // Invalid login
-                res.setContentType("text/html");
-                res.getWriter().println("<h2>Invalid mobile or password</h2>");
-                res.getWriter().println("<a href='login.jsp'>Back to Login</a>");
+                response.sendRedirect("login.jsp?error=1");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            res.getWriter().println("ERROR: " + e.getMessage());
         }
     }
 }

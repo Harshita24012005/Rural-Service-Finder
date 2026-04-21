@@ -1,39 +1,27 @@
 <%@ page import="java.util.*" %>
-<!DOCTYPE html>
-<html>
-<head>
-<title>Results</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
 
 <h2>Search Results</h2>
 
 <%
-ArrayList<String> list = (ArrayList<String>) request.getAttribute("data");
+List<Map<String, String>> list =
+    (List<Map<String, String>>) request.getAttribute("data");
 
-if(list != null && !list.isEmpty()){
-    for(String s : list){
-        String arr[] = s.split(",");
+if (list == null || list.isEmpty()) {
+%>
+    <h3>No providers found 😢</h3>
+<%
+} else {
+    for (Map<String, String> row : list) {
 %>
 
-<div class="provider-card">
-    <div class="provider-info">
-        <h3><%= arr[0] %></h3>
-        <p><%= arr[1] %> • ⭐ <%= arr[2] %></p>
-    </div>
+<div style="border:1px solid #ccc; padding:10px; margin:10px;">
+    <h3><%= row.get("name") %></h3>
+    <p>Service: <%= row.get("service") %></p>
+    <p>Village: <%= row.get("village") %></p>
+    <p>Phone: <%= row.get("phone") %></p>
 </div>
 
 <%
     }
-}else{
-%>
-
-<h3>No results found ❌</h3>
-
-<%
 }
 %>
-
-</body>
-</html>

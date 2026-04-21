@@ -1,38 +1,22 @@
 package controller;
-
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.util.List;
 import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import util.DBConnection;
-
-@WebServlet("/UpdateProviderServlet")
 public class UpdateProviderServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        try {
-            Connection con = DBConnection.getConnection();
+        String village = request.getParameter("village");
+        String service = request.getParameter("service");
 
-            PreparedStatement ps = con.prepareStatement(
-              "UPDATE service_providers SET name=?, service=?, mobile=?, village=? WHERE id=?");
+        ProviderDAO dao = new ProviderDAO();
 
-            ps.setString(1, req.getParameter("name"));
-            ps.setString(2, req.getParameter("service"));
-            ps.setString(3, req.getParameter("mobile"));
-            ps.setString(4, req.getParameter("village"));
-            ps.setString(5, req.getParameter("id"));
+        List<Provider> providers = dao.searchProviders(village, service);
 
-            ps.executeUpdate();
-
-            res.sendRedirect("ViewProviderServlet");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        request.setAttribute("providers", providers);
+        request.getRequestDispatcher("showProviders.jsp").forward(request, response);
     }
 }

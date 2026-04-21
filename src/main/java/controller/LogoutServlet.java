@@ -1,21 +1,19 @@
 package controller;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import java.io.*;
+import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/LogoutServlet")
+@WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = req.getSession(false);
-        if(session != null){
-            session.invalidate(); // clear session
-        }
+        HttpSession session = request.getSession();
+        session.invalidate();
 
-        res.sendRedirect("login.jsp");
+        response.sendRedirect("login.jsp");
     }
 }

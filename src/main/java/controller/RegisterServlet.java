@@ -1,47 +1,82 @@
 package controller;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-
 import util.DBConnection;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/RegisterServlet")
+@WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
-	protected void doGet(HttpServletRequest req, HttpServletResponse res)
-	        throws ServletException, IOException {
 
-	    res.sendRedirect("register.jsp");
-	}
-
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String name = request.getParameter("name");   // FIXED
+        String mobile = request.getParameter("mobile");
+        String village = request.getParameter("village");
+        String service = request.getParameter("service");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
+
+        if (service == null || service.equals("")) {
+            service = "NA";
+        }
 
         try {
             Connection con = DBConnection.getConnection();
 
-            PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO users(name,mobile,village,password) VALUES(?,?,?,?)");
+            // check mobile already exists
+            String checkSql = "SELECT * FROM providers WHERE mobile=?";
+            PreparedStatement checkPs = con.prepareStatement(checkSql);
+            checkPs.setString(1, mobile);
 
-            ps.setString(1, req.getParameter("name"));
-            ps.setString(2, req.getParameter("mobile"));
-            ps.setString(3, req.getParameter("village"));
-            ps.setString(4, req.getParameter("password"));
+            ResultSet rs = checkPs.executeQuery();
 
-            int x = ps.executeUpdate();
+            if (rs.next()) {
+                request.setAttribute("error", "Mobile already registered ❌");
+                RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+                rd.forward(request, response);
+                return;
+            }
 
-            if (x > 0) {
-                res.sendRedirect("login.jsp");   // ✅ IMPORTANT LINE
+            // INSERT
+            String sql = "INSERT INTO providers (full_name, mobile, village, service, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1,name);
+            ps.setString(2, mobile);
+            ps.setString(3, village);
+            ps.setString(4, service);
+            ps.setString(5, password);
+            ps.setString(6, role);
+
+            int i = ps.executeUpdate();
+
+            if (i > 0) {
+
+                // 1. CREATE SESSION (AUTO LOGIN)
+                HttpSession session = request.getSession();
+                session.setAttribute("user", name);
+                session.setAttribute("mobile", mobile);
+                session.setAttribute("role", role);
+
+                // 2. ROLE BASED REDIRECT
+                if ("provider".equals(role)) {
+                    response.sendRedirect("provider_dashboard.jsp");
+                } else {
+                    response.sendRedirect("service_list.jsp");
+                }
+
             } else {
-                res.getWriter().print("Registration Failed");
+                response.getWriter().println("Registration Failed");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            res.getWriter().print("Error : " + e.getMessage());
+            response.getWriter().println("ERROR: " + e.getMessage());
         }
     }
 }

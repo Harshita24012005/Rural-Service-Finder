@@ -1,5 +1,129 @@
-<form action="LoginServlet" method="post">
-    Mobile: <input type="text" name="mobile" required><br><br>
-    Password: <input type="password" name="password" required><br><br>
-    <button type="submit">Login</button>
-</form>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – Rural Service Finder</title>
+
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div style="padding:15px 20px;">
+    <a href="home.jsp" style="
+        text-decoration:none;
+        color:#2e7d32;
+        font-weight:500;
+        font-size:14px;
+    ">
+        ← Back to Home
+    </a>
+</div>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <!-- LOGO -->
+        <div class="auth-logo">
+            <div class="icon">🌿</div>
+        </div>
+
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Login to access Rural Service Finder</p>
+
+        <!-- SUCCESS MESSAGE -->
+        <%
+            String success = request.getParameter("success");
+            if (success != null) {
+        %>
+        <div style="background:#e8f5e9; color:#2e7d32; padding:10px; border-radius:8px; text-align:center; margin-bottom:15px;">
+            Registration successful ✅ Please login
+        </div>
+        <%
+            }
+        %>
+
+        <!-- ERROR MESSAGE -->
+        <%
+            String error = request.getParameter("error");
+            if (error != null) {
+        %>
+        <%
+    String deleted = request.getParameter("deleted");
+    if (deleted != null) {
+%>
+
+<div style="
+    background:#ffebee;
+    color:#c62828;
+    padding:10px;
+    border-radius:8px;
+    text-align:center;
+    margin-bottom:15px;
+">
+    Account deleted successfully ❌
+</div>
+
+<%
+    }
+%>
+        <div style="background:#ffebee; color:#c62828; padding:10px; border-radius:8px; text-align:center; margin-bottom:15px;">
+            Invalid mobile number or password ❌
+        </div>
+        <%
+            }
+        %>
+        
+        <!-- LOGIN FORM -->
+        <form action="login" method="post">
+     
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="text" name="mobile" placeholder="Enter 10-digit mobile number" required maxlength="10">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+               <div style="position:relative;">
+    <input type="password" id="password" name="password" placeholder="Enter password" required style="width:100%; padding-right:40px;">
+
+    <span onclick="togglePassword()" 
+          style="
+            position:absolute;
+            right:10px;
+            top:50%;
+            transform:translateY(-50%);
+            cursor:pointer;
+          ">
+        👁️
+    </span>
+</div>
+            </div>
+
+            <button type="submit" class="btn-primary">Login →</button>
+        </form>
+
+        <!-- LINK -->
+        <p class="switch-link">
+            New user? <a href="register.jsp">Create an account</a>
+        </p>
+
+    </div>
+</div>
+<script>
+function togglePassword(){
+    var pass = document.getElementById("password");
+
+    if(pass.type === "password"){
+        pass.type = "text";
+    } else {
+        pass.type = "password";
+    }
+}
+</script>
+
+</body>
+</html>

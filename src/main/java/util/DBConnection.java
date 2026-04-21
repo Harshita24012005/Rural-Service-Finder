@@ -13,11 +13,11 @@ public class DBConnection {
             con = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/rural_service_finder",
                 "root",
-                "Harshita123"   // password (empty if XAMPP)
+                "Harshita2311"
             );
 
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();  // VERY IMPORTANT (shows real error)
         }
 
         return con;

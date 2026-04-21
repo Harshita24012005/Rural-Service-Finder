@@ -1,8 +1,7 @@
 eclipse.preferences.version=1
-encoding//src/main/webapp/admin_dashboard.jsp=UTF-8
-encoding//src/main/webapp/dashboard.jsp=UTF-8
+encoding//src/main/webapp/logout.jsp=UTF-8
+encoding//src/main/webapp/provider_dashboard.jsp=UTF-8
 encoding//src/main/webapp/result.jsp=UTF-8
-encoding//src/main/webapp/search_result.jsp=UTF-8
 encoding//src/main/webapp/service_list.jsp=UTF-8
-encoding//src/main/webapp/view_provider.jsp=UTF-8
+encoding//src/main/webapp/showProviders.jsp=UTF-8
 encoding/<project>=UTF-8

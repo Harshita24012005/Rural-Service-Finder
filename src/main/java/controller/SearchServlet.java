@@ -1,56 +1,34 @@
 package controller;
-
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-
-import util.DBConnection;   // ✅ IMPORTANT
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/SearchServlet")
 public class SearchServlet extends HttpServlet {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	    String service = request.getParameter("service");
+        // 1. Get village from input
+        String village = request.getParameter("village");
 
-	    java.util.ArrayList<String> list = new java.util.ArrayList<>();
+        System.out.println("Village entered: " + village); // DEBUG
 
-	    try {
-	        java.sql.Connection con = util.DBConnection.getConnection();
+        // 2. Call DAO
+        ProviderDAO dao = new ProviderDAO();
+        List<Provider> providers = dao.getProvidersByVillage(village);
 
-	        java.sql.PreparedStatement ps = con.prepareStatement(
-	            "SELECT * FROM providers WHERE service LIKE ?"
-	        );
+        System.out.println("Records found: " + providers.size()); // DEBUG
 
-	        ps.setString(1, "%" + service + "%");
+        // 3. Send data to JSP
+        request.setAttribute("providers", providers);
 
-	        java.sql.ResultSet rs = ps.executeQuery();
-
-	        while (rs.next()) {
-	            list.add(
-	                rs.getString("name") + "," +
-	                rs.getString("location") + "," +
-	                rs.getDouble("rating")
-	            );
-	        }
-
-	        // 👉 send data to JSP
-	        request.setAttribute("data", list);
-
-	        // 👉 go back to same page
-	        response.setContentType("text/html");
-	        response.getWriter().println("<h1>Servlet Working</h1>");
-	        response.getWriter().println("Results size: " + list.size());
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
+        // 4. Forward to result page
+        request.getRequestDispatcher("showProviders.jsp").forward(request, response);
+    }
 }
