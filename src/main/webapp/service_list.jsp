@@ -1,13 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%
-    String user = (String) session.getAttribute("user");
-    String role = (String) session.getAttribute("role");
-
-    if (user == null || role == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +34,6 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
         <a href="service_list.jsp" class="active">Services</a>
         <a href="contact.jsp">Contact</a>
         <a href="register.jsp">Register</a>
-        <a href="login.jsp" class="nav-login">Login</a>
         <div id="google_translate_element" style="margin-left:15px;"></div>
     </nav>
 </header>

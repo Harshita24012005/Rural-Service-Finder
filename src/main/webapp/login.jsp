@@ -11,13 +11,15 @@
 </head>
 
 <body>
+<%
+    // URL se data nikalna taaki hidden fields mein daal sakein
+    String redirect = request.getParameter("redirect");
+    String price = request.getParameter("price");
+    String providerId = request.getParameter("providerId");
+%>
+
 <div style="padding:15px 20px;">
-    <a href="home.jsp" style="
-        text-decoration:none;
-        color:#2e7d32;
-        font-weight:500;
-        font-size:14px;
-    ">
+    <a href="home.jsp" style="text-decoration:none; color:#2e7d32; font-weight:500; font-size:14px;">
         ← Back to Home
     </a>
 </div>
@@ -33,52 +35,31 @@
         <h2>Welcome Back</h2>
         <p class="subtitle">Login to access Rural Service Finder</p>
 
-        <!-- SUCCESS MESSAGE -->
-        <%
-            String success = request.getParameter("success");
-            if (success != null) {
-        %>
-        <div style="background:#e8f5e9; color:#2e7d32; padding:10px; border-radius:8px; text-align:center; margin-bottom:15px;">
-            Registration successful ✅ Please login
-        </div>
-        <%
-            }
-        %>
+        <!-- SUCCESS & ERROR MESSAGES (Mene Clean kar diye hain) -->
+        <% if (request.getParameter("success") != null) { %>
+            <div style="background:#e8f5e9; color:#2e7d32; padding:10px; border-radius:8px; text-align:center; margin-bottom:15px;">
+                Registration successful ✅ Please login
+            </div>
+        <% } %>
 
-        <!-- ERROR MESSAGE -->
-        <%
-            String error = request.getParameter("error");
-            if (error != null) {
-        %>
-        <%
-    String deleted = request.getParameter("deleted");
-    if (deleted != null) {
-%>
+        <% if (request.getParameter("deleted") != null) { %>
+            <div style="background:#ffebee; color:#c62828; padding:10px; border-radius:8px; text-align:center; margin-bottom:15px;">
+                Account deleted successfully ❌
+            </div>
+        <% } %>
 
-<div style="
-    background:#ffebee;
-    color:#c62828;
-    padding:10px;
-    border-radius:8px;
-    text-align:center;
-    margin-bottom:15px;
-">
-    Account deleted successfully ❌
-</div>
-
-<%
-    }
-%>
-        <div style="background:#ffebee; color:#c62828; padding:10px; border-radius:8px; text-align:center; margin-bottom:15px;">
-            Invalid mobile number or password ❌
-        </div>
-        <%
-            }
-        %>
+        <% if (request.getParameter("error") != null) { %>
+            <div style="background:#ffebee; color:#c62828; padding:10px; border-radius:8px; text-align:center; margin-bottom:15px;">
+                Invalid mobile number or password ❌
+            </div>
+        <% } %>
         
         <!-- LOGIN FORM -->
         <form action="login" method="post">
-     
+            <!-- YE TEEN HIDDEN FIELDS DATA KO SERVLET TAK LE JAYENGE -->
+            <input type="hidden" name="redirect" value="<%= (redirect != null) ? redirect : "" %>">
+            <input type="hidden" name="price" value="<%= (price != null) ? price : "" %>">
+            <input type="hidden" name="providerId" value="<%= (providerId != null) ? providerId : "" %>">
 
             <div class="form-group">
                 <label>Mobile Number</label>
@@ -87,41 +68,28 @@
 
             <div class="form-group">
                 <label>Password</label>
-               <div style="position:relative;">
-    <input type="password" id="password" name="password" placeholder="Enter password" required style="width:100%; padding-right:40px;">
-
-    <span onclick="togglePassword()" 
-          style="
-            position:absolute;
-            right:10px;
-            top:50%;
-            transform:translateY(-50%);
-            cursor:pointer;
-          ">
-        👁️
-    </span>
-</div>
+                <div style="position:relative;">
+                    <input type="password" id="password" name="password" placeholder="Enter password" required style="width:100%; padding-right:40px;">
+                    <span onclick="togglePassword()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                        👁️
+                    </span>
+                </div>
             </div>
 
             <button type="submit" class="btn-primary">Login →</button>
         </form>
 
-        <!-- LINK -->
         <p class="switch-link">
             New user? <a href="register.jsp">Create an account</a>
         </p>
 
     </div>
 </div>
+
 <script>
 function togglePassword(){
     var pass = document.getElementById("password");
-
-    if(pass.type === "password"){
-        pass.type = "text";
-    } else {
-        pass.type = "password";
-    }
+    pass.type = (pass.type === "password") ? "text" : "password";
 }
 </script>
 

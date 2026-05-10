@@ -12,29 +12,48 @@ public class ProviderDAO {
         List<Provider> list = new ArrayList<>();
 
         try {
+
             Connection con = DBConnection.getConnection();
 
-            String sql = "SELECT * FROM providers WHERE LOWER(village)=LOWER(?) AND LOWER(service)=LOWER(?)";
+            String sql =
+            "SELECT * FROM providers WHERE LOWER(village)=LOWER(?) AND LOWER(service)=LOWER(?)";
 
             PreparedStatement ps = con.prepareStatement(sql);
+
             ps.setString(1, village.trim());
+
             ps.setString(2, service.trim());
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
+
                 Provider p = new Provider();
 
-                // ✅ CHANGE HERE
+                // ID
+                p.setId(rs.getInt("id"));
+
+                // BASIC DETAILS
                 p.setName(rs.getString("full_name"));
+
                 p.setMobile(rs.getString("mobile"));
+
                 p.setVillage(rs.getString("village"));
+
                 p.setService(rs.getString("service"));
+
+                // NEW FIELDS
+                p.setImage(rs.getString("image"));
+
+                p.setExperience(rs.getString("experience"));
+
+                p.setAbout(rs.getString("about"));
 
                 list.add(p);
             }
 
         } catch (Exception e) {
+
             e.printStackTrace();
         }
 

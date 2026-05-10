@@ -39,7 +39,6 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
         <a href="service_list.jsp">Services</a>
         <a href="contact.jsp" class="active">Contact</a>
         <a href="register.jsp">Register</a>
-        <a href="login.jsp" class="nav-login">Login</a>
         <div id="google_translate_element" style="margin-left:15px;"></div>
     </nav>
 </header>

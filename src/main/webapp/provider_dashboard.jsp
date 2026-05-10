@@ -17,9 +17,7 @@
 
 <%
     }
-%>
 
-<%
     String user = (String) session.getAttribute("user");
     String role = (String) session.getAttribute("role");
 
@@ -39,6 +37,7 @@
     <title>Provider Dashboard</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
 </head>
+
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
@@ -61,7 +60,6 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
         <img src="<%= request.getContextPath() %>/images/logo.png">
         <div class="logo-text">RSF <span>Provider Dashboard</span></div>
     </a>
-    
 
     <nav>
         <a href="<%= request.getContextPath() %>/home.jsp">Home</a>
@@ -80,9 +78,9 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
 <!-- DASHBOARD CONTENT -->
 <section class="services-section">
 
-    <!-- PROFILE CARD -->
     <div class="service-grid">
 
+        <!-- PROFILE CARD -->
         <div class="card">
             <div class="card-body">
                 <h3>Your Profile</h3>
@@ -90,6 +88,21 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
                 <p><b>Mobile:</b> <%= mobile %></p>
                 <p><b>Service:</b> <%= service %></p>
                 <p><b>Status:</b> Active Provider</p>
+
+                <br>
+
+                <!-- EDIT PROFILE BUTTON -->
+                <a href="editProvider.jsp"
+                   style="
+                      display:inline-block;
+                      padding:10px 18px;
+                      background:#1565c0;
+                      color:white;
+                      text-decoration:none;
+                      border-radius:8px;
+                   ">
+                   Edit My Details ✏️
+                </a>
             </div>
         </div>
 
@@ -113,29 +126,36 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
                 <p>📈 Growth: +18%</p>
             </div>
         </div>
-        <form action="deleteAccount" method="post">
 
-    <div class="form-group">
-        <label>Confirm Password</label>
-        <input type="password" name="password" 
-               placeholder="Enter your password to delete account" required>
-    </div>
+        <!-- DELETE ACCOUNT CARD -->
+        <div class="card">
+            <div class="card-body">
+                <h3>Delete Account</h3>
 
-    <button style="
-        margin-top:15px;
-        background:#c62828;
-        color:white;
-        padding:10px 20px;
-        border:none;
-        border-radius:8px;
-        cursor:pointer;
-    ">
-        Delete My Account ❌
-    </button>
+                <form action="deleteAccount" method="post">
 
-</form>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" name="password"
+                               placeholder="Enter password to delete account"
+                               required>
+                    </div>
 
-        <!-- ACTION CARD -->
+                    <button style="
+                        margin-top:15px;
+                        background:#c62828;
+                        color:white;
+                        padding:10px 20px;
+                        border:none;
+                        border-radius:8px;
+                        cursor:pointer;
+                    ">
+                        Delete My Account ❌
+                    </button>
+
+                </form>
+            </div>
+        </div>
 
     </div>
 
